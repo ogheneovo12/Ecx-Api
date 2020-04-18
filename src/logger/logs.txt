@@ -715,3 +715,11 @@ GET /style.css 200 3.927 ms
 GET /linter/styles/codepen-embed.css 304 0.872 ms
 GET /linter/highlight.pack.js 304 2.926 ms
 GET /img/code3.jpg 200 0.801 ms
+GET /api/users 200 283.434 ms
+POST /api/users/signup 200 1215.924 ms
+GET /api/users 200 4.175 ms
+POST /api/users/ 404 164.379 ms
+GET /api/users/ 200 601.840 ms
+GET /api/users/ - - ms
+POST /api/user/login 404 160.747 ms
+GET /api/users/ 200 1225.873 ms
