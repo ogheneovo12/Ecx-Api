@@ -6,7 +6,7 @@ module.exports = {
   PORT: process.env.PORT || 3000,
   saltRounds: parseInt(process.env.SALTROUNDS) || 12,
   SECRET: process.env.SECRET || "30_DAYSOF_CODE@_DSC_@2020",
-  MONGODB_URL: process.env.MONGODB_URL || `mongodb://localhost:27017/ecx`,
+  MONGODB_URL: process.env.DATABASE_URL || `mongodb://localhost:27017/ecx`,
   DB: {
     //MongoDB configuration
     HOST: "localhost",
