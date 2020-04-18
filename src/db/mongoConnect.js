@@ -1,7 +1,5 @@
 const mongoose = require("mongoose");
-require("dotenv").config();
 module.exports = function (config) {
-  console.log(config.MONGODB_URL);
   mongoose
     .connect(config.MONGODB_URL, {
       useUnifiedTopology: true,
