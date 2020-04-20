@@ -5,24 +5,38 @@ const logger = require("./logger/logger");
 const apiRoute = require("./routes/");
 const path = require("path");
 const cors = require("cors");
-app.use(logger());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use("/", express.static(path.join(__dirname, "/public")));
-const whitelist = ["http://localhost", "http://127.0.0.1"];
-var checkForvalidIp = (req, callback) => {
-  const Options = {
+
+const whitelist = ["34.236.76.223"];
+var checkForvalidIp = function (req, callback) {
+  const options = {
     methods: ["GET", "PUT", "POST", "DELETE", "HEAD", "PATCH"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true,
   };
 
   const currentIpAddress = req.connection.remoteAddress;
-  Options.origin = whitelist.includes(currentIpAddress) ? true : false;
-  callback(null, Options);
+  var ip =
+    (req.headers["x-forwarded-for"] || "").split(",").pop() ||
+    req.connection.remoteAddress ||
+    req.socket.remoteAddress ||
+    req.connection.socket.remoteAddress;
+  console.log(current, ip);
+  options.origin =
+    whitelist.includes(currentIpAddress) ||
+    whitelist.includes(req.header("Origin"))
+      ? true
+      : false;
+  console.log(options);
+  callback(null, options);
 };
 
 app.use(cors(checkForvalidIp));
+app.use(logger());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(
+  "/",
+  cors({ origin: "google.com" }),
+  express.static(path.join(__dirname, "/public"))
+);
 app.use("/api", apiRoute);
 
 module.exports = app;
