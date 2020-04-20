@@ -5,6 +5,31 @@ const logger = require("./logger/logger");
 const apiRoute = require("./routes/");
 const path = require("path");
 const cors = require("cors");
+("use strict");
+
+var os = require("os");
+var ifaces = os.networkInterfaces();
+
+Object.keys(ifaces).forEach(function (ifname) {
+  var alias = 0;
+
+  ifaces[ifname].forEach(function (iface) {
+    if ("IPv4" !== iface.family || iface.internal !== false) {
+      // skip over internal (i.e. 127.0.0.1) and non-ipv4 addresses
+      return;
+    }
+
+    if (alias >= 1) {
+      // this single interface has multiple ipv4 addresses
+      console.log(ifname + ":" + alias, iface.address);
+    } else {
+      // this interface has only one ipv4 adress
+      console.log(ifname, iface.address);
+    }
+    ++alias;
+  });
+});
+
 var allowedOrigins = ["http://yourapp.com"];
 var getClientIp = function (req) {
   var ipAddress = req.connection.remoteAddress;
@@ -28,25 +53,7 @@ app.use((req, res, next) => {
       .json({ error: ipAddress + " IP is not allowed to visit this site" });
   }
 });
-//cors was not working ooooo
-// app.use(
-//   cors({
-//     origin: function (origin, callback) {
-//       // allow requests with no origin
-//       // (like mobile apps or curl requests)
-//       // if (!origin) return callback(null, true);
-//       console.log(origin);
-//       if (!whiteList.includes(origin)) {
-//         var msg =
-//           "The CORS policy for this site does not " +
-//           "allow access from the specified Origin.";
-//         return callback("not allowed", false);
-//       }
-//       return callback(null, true);
-//     },
-//   })
-// );
-
+app.use(cors());
 app.use(logger());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
