@@ -17,7 +17,7 @@ var getClientIp = function (req) {
   }
   return ipAddress;
 };
-const whiteList = ["10.45.182.145", "102.89.0.16"];
+const whiteList = ["10.45.182.145", "10.35.189.198", "102.89.0.16"];
 app.use((req, res, next) => {
   var ipAddress = getClientIp(req);
   if (whiteList.includes(ipAddress)) {
