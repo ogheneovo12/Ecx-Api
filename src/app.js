@@ -18,14 +18,14 @@ var checkForvalidIp = function (req, callback) {
     req.connection.remoteAddress ||
     req.socket.remoteAddress ||
     req.connection.socket.remoteAddress;
-  console.log(current, ip);
+  console.log(currentIpAddress, ip);
   options.origin =
     whitelist.includes(currentIpAddress) ||
     whitelist.includes(req.header("Origin"))
       ? true
       : false;
   console.log(options);
-  callback(null, options);
+  callback("", options);
 };
 
 app.use(cors(checkForvalidIp));
