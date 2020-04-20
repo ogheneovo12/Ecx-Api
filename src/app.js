@@ -17,16 +17,35 @@ var getClientIp = function (req) {
   }
   return ipAddress;
 };
-const whiteList = [""];
+const whiteList = ["10.45.182.145", "102.89.0.16"];
 app.use((req, res, next) => {
   var ipAddress = getClientIp(req);
-  console.log(ipAddress);
   if (whiteList.includes(ipAddress)) {
     next();
   } else {
-    res.send(ipAddress + " IP is not in whiteList");
+    res
+      .status(403)
+      .json({ error: ipAddress + " IP is not allowed to visit this site" });
   }
 });
+//cors was not working ooooo
+// app.use(
+//   cors({
+//     origin: function (origin, callback) {
+//       // allow requests with no origin
+//       // (like mobile apps or curl requests)
+//       // if (!origin) return callback(null, true);
+//       console.log(origin);
+//       if (!whiteList.includes(origin)) {
+//         var msg =
+//           "The CORS policy for this site does not " +
+//           "allow access from the specified Origin.";
+//         return callback("not allowed", false);
+//       }
+//       return callback(null, true);
+//     },
+//   })
+// );
 
 app.use(logger());
 app.use(bodyParser.json());
